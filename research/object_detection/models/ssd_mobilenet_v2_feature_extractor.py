@@ -90,6 +90,23 @@ class SSDMobileNetV2FeatureExtractor(ssd_meta_arch.SSDFeatureExtractor):
     """
     return (2.0 / 255.0) * resized_inputs - 1.0
 
+  def output_tensors(self, tensor_dic):
+      def output_tensor_shape(tensorShape):
+          shape = ""
+          for s in tensorShape:
+              if shape:
+                  shape += ", "
+              shape += str(s)
+
+          return shape
+
+      tensors = []
+      for tensor in tensor_dic.values():
+          tensors.append((tensor.name, list(tensor.shape)))
+      for tensor in sorted(tensors):
+          print("------------------------{}".format(tensor[0]))
+          print("({})".format(output_tensor_shape(tensor[1])))
+
   def extract_features(self, preprocessed_inputs):
     """Extract features from preprocessed inputs.
 
@@ -125,6 +142,8 @@ class SSDMobileNetV2FeatureExtractor(ssd_meta_arch.SSDFeatureExtractor):
               depth_multiplier=self._depth_multiplier,
               use_explicit_padding=self._use_explicit_padding,
               scope=scope)
+        print("-------------------------------------image_features")
+        self.output_tensors(image_features)
         with slim.arg_scope(self._conv_hyperparams_fn()):
           feature_maps = feature_map_generators.multi_resolution_feature_maps(
               feature_map_layout=feature_map_layout,
@@ -132,5 +151,8 @@ class SSDMobileNetV2FeatureExtractor(ssd_meta_arch.SSDFeatureExtractor):
               min_depth=self._min_depth,
               insert_1x1_conv=True,
               image_features=image_features)
+
+        print("-------------------------------------feature_maps")
+        self.output_tensors(feature_maps)
 
     return feature_maps.values()

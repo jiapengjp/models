@@ -155,6 +155,7 @@ def main(_):
   if not gfile.Exists(FLAGS.checkpoint_dir):
     gfile.MakeDirs(FLAGS.checkpoint_dir)
 
+  print("-----------------------------------ok0")
   train_model = model.Model(data_dir=FLAGS.data_dir,
                             file_extension=FLAGS.file_extension,
                             is_training=True,
@@ -183,8 +184,10 @@ def main(_):
                             equal_weighting=FLAGS.equal_weighting,
                             size_constraint_weight=FLAGS.size_constraint_weight)
 
+  print("-----------------------------------ok1")
   train(train_model, FLAGS.pretrained_ckpt, FLAGS.imagenet_ckpt,
         FLAGS.checkpoint_dir, FLAGS.train_steps, FLAGS.summary_freq)
+  print("-----------------------------------ok2")
 
 
 def train(train_model, pretrained_ckpt, imagenet_ckpt, checkpoint_dir,

@@ -137,6 +137,7 @@ class Model(object):
     logging.info('equal_weighting: %s', equal_weighting)
     logging.info('train_global_scale_var: %s', train_global_scale_var)
 
+    print("---------------------------------------ok1")
     if self.size_constraint_weight > 0 or not is_training:
       self.global_scale_var = tf.Variable(
           0.1, name='global_scale_var',
@@ -145,6 +146,7 @@ class Model(object):
           constraint=lambda x: tf.clip_by_value(x, 0, np.infty))
 
     if self.is_training:
+      print("---------------------------------------ok2")
       self.reader = reader.DataReader(self.data_dir, self.batch_size,
                                       self.img_height, self.img_width,
                                       self.seq_length, NUM_SCALES,
@@ -155,6 +157,7 @@ class Model(object):
                                       self.imagenet_norm,
                                       self.shuffle,
                                       self.input_file)
+      print("---------------------------------------ok3")
       self.build_train_graph()
     else:
       self.build_depth_test_graph()
@@ -163,19 +166,27 @@ class Model(object):
         self.build_objectmotion_test_graph()
 
     # At this point, the model is ready. Print some info on model params.
+    print("---------------------------------------ok4")
     util.count_parameters()
 
   def build_train_graph(self):
+    print("--------------------------------------+++-ok1")
     self.build_inference_for_training()
+    print("--------------------------------------+++-ok2")
     self.build_loss()
+    print("--------------------------------------+++-ok3")
     self.build_train_op()
+    print("--------------------------------------+++-ok4")
     if self.build_sum:
+      print("--------------------------------------+++-ok5")
       self.build_summaries()
 
   def build_inference_for_training(self):
     """Invokes depth and ego-motion networks and computes clouds if needed."""
+    print("-------------------------------------------+++-ok1")
     (self.image_stack, self.image_stack_norm, self.seg_stack,
      self.intrinsic_mat, self.intrinsic_mat_inv) = self.reader.read_data()
+    print("-------------------------------------------+++-ok2")
     with tf.variable_scope('depth_prediction'):
       # Organized by ...[i][scale].  Note that the order is flipped in
       # variables in build_loss() below.

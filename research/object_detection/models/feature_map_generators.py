@@ -356,11 +356,15 @@ def multi_resolution_feature_maps(feature_map_layout, depth_multiplier,
     if 'conv_kernel_size' in feature_map_layout:
       conv_kernel_size = feature_map_layout['conv_kernel_size'][index]
     if from_layer:
+      print("-------------multi_resolution_feature_maps>from_layer: {}".format(from_layer))
       feature_map = image_features[from_layer]
+      print(feature_map)
       base_from_layer = from_layer
       feature_map_keys.append(from_layer)
     else:
+      print("-------------multi_resolution_feature_maps>from_layer: {}-th".format(index))
       pre_layer = feature_maps[-1]
+      print(pre_layer)
       pre_layer_depth = pre_layer.get_shape().as_list()[3]
       intermediate_layer = pre_layer
       if insert_1x1_conv:

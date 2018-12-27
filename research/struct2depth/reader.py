@@ -64,6 +64,7 @@ class DataReader(object):
     with tf.name_scope('data_loading'):
       with tf.name_scope('enqueue_paths'):
         seed = random.randint(0, 2**31 - 1)
+        print("read_data>-------------------------------------------+++-ok1")
         self.file_lists = self.compile_file_list(self.data_dir, self.input_file)
         image_paths_queue = tf.train.string_input_producer(
             self.file_lists['image_file_list'], seed=seed,
@@ -289,6 +290,7 @@ class DataReader(object):
   def compile_file_list(self, data_dir, split, load_pose=False):
     """Creates a list of input files."""
     logging.info('data_dir: %s', data_dir)
+    print("read_data>-------------------------------------------+++-ok1" + split)
     with gfile.Open(os.path.join(data_dir, '%s.txt' % split), 'r') as f:
       frames = f.readlines()
       frames = [k.rstrip() for k in frames]
